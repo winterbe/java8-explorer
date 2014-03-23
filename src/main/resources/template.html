@@ -9,11 +9,21 @@
 
     <title>Java 8 API Explorer - Benjamin Winterberg</title>
 
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
     <style type="text/css">
         body {
-            padding-top: 70px;
+            padding-top: 80px;
+        }
+
+        .navbar-brand {
+            font-size: 20px;
+        }
+
+        .navbar-link {
+            font-size: 18px;
+            margin-left: 10px;
         }
 
         #filter {
@@ -23,6 +33,10 @@
         #details > div {
             display: none;
         }
+
+        .panel-info .panel-title {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -30,10 +44,16 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="#" data-target="main">Java 8 API Explorer</a>
 
-        <p class="navbar-text navbar-right"><a href="http://winterbe.com" class="navbar-link">winterbe.com</a></p>
+        <p class="navbar-text navbar-right">
+            <!--<a href="http://winterbe.com" class="navbar-link">winterbe.com</a>-->
+            <a href="#" class="navbar-link"><i class="fa fa-twitter"></i></a>
+            <a href="#" class="navbar-link"><i class="fa fa-google-plus"></i></a>
+            <a href="#" class="navbar-link"><i class="fa fa-facebook"></i></a>
+            <a href="#" class="navbar-link"><i class="fa fa-github"></i></a>
+        </p>
     </div>
-
 </nav>
+
 <div id="results" class="container">
     <form id="filter" class="form-inline" role="form" style="text-align: center;">
         <div class="input-group input-group-lg">
