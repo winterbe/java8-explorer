@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="author" content="Benjamin Winterberg">
+    <meta name="description" content="Java SE 8 API Explorer lists all new methods for the latest 1.8 release of Java">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Java 8 API Explorer - Benjamin Winterberg</title>
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <style type="text/css">
+        #details > div {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" data-target="main">Java 8 API Explorer</a>
+
+        <p class="navbar-text navbar-right"><a href="http://winterbe.com" class="navbar-link">winterbe.com</a></p>
+    </div>
+
+</nav>
+<div id="results" class="container">
+    <div id="content-list" class="list-group"></div>
+</div>
+<div id="details" class="container"></div>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var showTargetId = function(targetId) {
+            $('#results').hide();
+            $('#detail' + targetId).show();
+            window.scrollTo(0, 0);
+        };
+
+        var showMainPage = function() {
+            $('#details').find('.detail-view').hide();
+            $('#results').show();
+        };
+
+        $('body')
+                .on('click', 'a[href="#"]', function(ev) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                })
+                .on('click', 'a[data-target="main"]', showMainPage);
+
+        $('#results')
+                .on('click', 'a[data-target-id]', function() {
+                    $('#results').find('a.active').removeClass('active');
+                    $(this).addClass('active');
+                    var targetId = $(this).data('targetId');
+                    showTargetId(targetId);
+                });
+    });
+</script>
+
+</body>
+</html>
