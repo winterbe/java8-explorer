@@ -37,6 +37,10 @@
         .panel-info .panel-title {
             font-size: 14px;
         }
+
+        #back {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -44,7 +48,13 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="#" data-target="main">Java 8 API Explorer</a>
 
-        <p class="navbar-text navbar-right">
+        <form id="back" class="navbar-form navbar-right">
+            <button class="btn btn-default" data-target="main" title="Back to Overview">
+                <i class="fa fa-arrow-left"></i> Back
+            </button>
+        </form>
+
+        <p id="social" class="navbar-text navbar-right">
             <!--<a href="http://winterbe.com" class="navbar-link">winterbe.com</a>-->
             <a href="#" class="navbar-link"><i class="fa fa-twitter"></i></a>
             <a href="#" class="navbar-link"><i class="fa fa-google-plus"></i></a>
@@ -77,20 +87,24 @@
         var showTargetId = function (targetId) {
             $('#results').hide();
             $('#detail' + targetId).show();
+            $('#social').hide();
+            $('#back').show();
             window.scrollTo(0, 0);
         };
 
         var showMainPage = function () {
             $('#details').find('.detail-view').hide();
             $('#results').show();
+            $('#back').hide();
+            $('#social').show();
         };
 
         $('body')
-                .on('click', 'a[href="#"]', function (ev) {
+                .on('click', 'a[href="#"],button', function (ev) {
                     ev.preventDefault();
                     ev.stopPropagation();
                 })
-                .on('click', 'a[data-target="main"]', showMainPage);
+                .on('click', '[data-target="main"]', showMainPage);
 
         $('#results')
                 .on('click', 'a[data-target-id]', function () {
