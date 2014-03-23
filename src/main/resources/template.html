@@ -16,6 +16,10 @@
             padding-top: 70px;
         }
 
+        #filter {
+            margin-bottom: 20px;
+        }
+
         #details > div {
             display: none;
         }
@@ -31,39 +35,75 @@
 
 </nav>
 <div id="results" class="container">
+    <form id="filter" class="form-inline" role="form" style="text-align: center;">
+        <div class="input-group input-group-lg">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <input id="search-input" type="text" class="form-control" placeholder="Search..." autofocus>
+            <span class="input-group-addon" title="New types only">
+                <input id="new-types-only" type="checkbox">
+            </span>
+        </div>
+    </form>
     <div id="content-list" class="list-group"></div>
 </div>
 <div id="details" class="container"></div>
 
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <script type="text/javascript">
-    $(function() {
-        var showTargetId = function(targetId) {
+    $(function () {
+        var showTargetId = function (targetId) {
             $('#results').hide();
             $('#detail' + targetId).show();
             window.scrollTo(0, 0);
         };
 
-        var showMainPage = function() {
+        var showMainPage = function () {
             $('#details').find('.detail-view').hide();
             $('#results').show();
         };
 
         $('body')
-                .on('click', 'a[href="#"]', function(ev) {
+                .on('click', 'a[href="#"]', function (ev) {
                     ev.preventDefault();
                     ev.stopPropagation();
                 })
                 .on('click', 'a[data-target="main"]', showMainPage);
 
         $('#results')
-                .on('click', 'a[data-target-id]', function() {
+                .on('click', 'a[data-target-id]', function () {
                     $('#results').find('a.active').removeClass('active');
                     $(this).addClass('active');
                     var targetId = $(this).data('targetId');
                     showTargetId(targetId);
                 });
+
+        var applyFilter = function () {
+            var onlyNew = $('#new-types-only').is(':checked');
+            var nameFilter = $('#search-input').val() || '';
+            nameFilter = nameFilter.toLowerCase();
+
+            $('#content-list')
+                    .find('.list-group-item')
+                    .each(function () {
+                        var text = $(this).text() || '';
+                        text = text.toLowerCase();
+                        if (nameFilter && text.indexOf(nameFilter) < 0) {
+                            $(this).hide();
+                            return;
+                        }
+                        if (onlyNew && $(this).find('.label').length === 0) {
+                            $(this).hide();
+                            return;
+                        }
+                        $(this).show();
+                    });
+        };
+
+        $('#search-input').on('input', _.debounce(applyFilter, 250));
+        $('#new-types-only').on('change', applyFilter);
     });
 </script>
 
