@@ -12,7 +12,33 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <style type="text/css">
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        #footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            background-color: #f5f5f5;
+            font-size: 11px;
+            padding-top: 10px;
+        }
+
         body {
             padding-top: 80px;
         }
@@ -67,7 +93,9 @@
 <div id="results" class="container">
     <form id="filter" class="form-inline" role="form" style="text-align: center;">
         <div class="input-group input-group-lg">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+            <span class="input-group-addon">
+                <i class="fa fa-search"></i>
+            </span>
             <input id="search-input" type="text" class="form-control" placeholder="Search..." autofocus>
             <span class="input-group-addon" title="New types only">
                 <input id="new-types-only" type="checkbox">
@@ -78,6 +106,13 @@
 </div>
 <div id="details" class="container"></div>
 
+<div id="footer">
+    <div class="container">
+        <p class="text-muted">
+            Disclaimer: The text descriptions shown on this page originate to the official <a href="http://docs.oracle.com/javase/8/docs/api/">JDK 1.8 API Documentation</a> from Oracle. Copyright © 1993, 2014, <a href="http://www.oracle.com/">Oracle</a> and/or its affiliates.
+        </p>
+    </div>
+</div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

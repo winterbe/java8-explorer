@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SiteCreator {
 
-    private static final String URI = "http://download.java.net/jdk8/docs/api/";
+    private static final String URI = "http://docs.oracle.com/javase/8/docs/api/";
 
     public void createSite(ExplorerResult result) throws IOException {
         InputStream inputStream = getClass()
