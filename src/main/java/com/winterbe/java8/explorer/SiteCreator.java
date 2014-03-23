@@ -18,12 +18,14 @@ import java.util.List;
  */
 public class SiteCreator {
 
+    private static final String URI = "http://download.java.net/jdk8/docs/api/";
+
     public void createSite(ExplorerResult result) throws IOException {
         InputStream inputStream = getClass()
                 .getClassLoader()
                 .getResourceAsStream("template.html");
 
-        Document document = Jsoup.parse(inputStream, "UTF-8", "http://download.java.net/jdk8/docs/api/");
+        Document document = Jsoup.parse(inputStream, "UTF-8", URI);
         Element contentList = document.body().getElementById("content-list");
         Element details = document.body().getElementById("details");
 
@@ -39,6 +41,8 @@ public class SiteCreator {
 
         document.body().select("table").addClass("table").addClass("table-bordered");
 
+        rewriteRelativeUrls(document);
+
         File file = new File("_site/index.html");
         BufferedWriter htmlWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
         htmlWriter.write(document.toString());
@@ -46,7 +50,30 @@ public class SiteCreator {
         htmlWriter.close();
     }
 
+    private void rewriteRelativeUrls(Document document) {
+        document.body().select("a").forEach((a) -> {
+            String href = a.attr("href");
+            if (href.equals("#")) {
+                return;
+            }
+            a.attr("target", "_blank");
+            if (!href.startsWith("http")) {
+                href = StringUtils.remove(href, "../");
+                a.attr("href", URI + href);
+            }
+        });
+    }
+
     private String createDetailView(TypeInfo typeInfo) {
+        String description = typeInfo.getDescription();
+        if (!typeInfo.isNewType()) {
+            int size = typeInfo.getMethods().size();
+            description = "<p class='text-muted'>This type already exists in earlier versions of Java. {{size}} new member{{text}} been added in JDK 1.8.<br><br>" +
+                    "See official javadoc for detailed descriptions of this type.</p>";
+            description = StringUtils.replaceOnce(description, "{{size}}", String.valueOf(size));
+            description = StringUtils.replaceOnce(description, "{{text}}", size == 1 ? " has" : "s have");
+        }
+
         String html = "<div id='detail{{id}}' class='detail-view'>{{content}}</div>";
 
         String content =
@@ -57,11 +84,11 @@ public class SiteCreator {
                         "    <div class=\"panel-body\">{{description}}</div>\n" +
                         "</div>";
         content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getPackageName() + "." + typeInfo.getName());
-        content = StringUtils.replaceOnce(content, "{{description}}", typeInfo.getDescription());
+        content = StringUtils.replaceOnce(content, "{{description}}", description);
 
         for (MethodInfo methodInfo : typeInfo.getMethods()) {
             String panel =
-                    "<div class='panel panel-default'>\n" +
+                    "<div class='panel panel-info'>\n" +
                             "    <div class=\"panel-heading\">\n" +
                             "        <h3 class=\"panel-title\">{{name}}</h3>\n" +
                             "    </div>\n" +
