@@ -64,6 +64,10 @@
             font-size: 14px;
         }
 
+        .panel-body code {
+            white-space: normal;
+        }
+
         #back {
             display: none;
         }
@@ -119,7 +123,10 @@
 
 <script type="text/javascript">
     $(function () {
+        var currentTop = 0;
+
         var showTargetId = function (targetId) {
+            currentTop = $(window).scrollTop();
             $('#results').hide();
             $('#detail' + targetId).show();
             $('#social').hide();
@@ -132,6 +139,7 @@
             $('#results').show();
             $('#back').hide();
             $('#social').show();
+            window.scrollTo(0, currentTop);
         };
 
         $('body')
