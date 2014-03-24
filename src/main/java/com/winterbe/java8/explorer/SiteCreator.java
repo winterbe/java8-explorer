@@ -73,7 +73,7 @@ public class SiteCreator {
         String content =
                 "<div class='panel panel-primary'>\n" +
                         "    <div class='panel-heading'>\n" +
-                        "        <h3 class='panel-title'>{{name}}</h3>\n" +
+                        "        <h3 class='panel-title'>{{name}} <span class='text-muted' style='color: white;'>{{info}}</span></h3>\n" +
                         "    </div>\n" +
                         "    <div class='panel-body'>\n" +
                         "        <code>{{declaration}}</code>\n" +
@@ -86,19 +86,22 @@ public class SiteCreator {
         content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getFullType());
         content = StringUtils.replaceOnce(content, "{{declaration}}", typeInfo.getPackageName() + "." + typeInfo.getName());
         content = StringUtils.replaceOnce(content, "{{url}}", URI + typeInfo.getPath());
+        content = StringUtils.replaceOnce(content, "{{info}}", typeInfo.isNewType() ? "NEW" : "");
 
-        for (MethodInfo methodInfo : typeInfo.getMethods()) {
+        for (MemberInfo memberInfo : typeInfo.getMembers()) {
             @Language("HTML")
             String panel =
-                    "<div class='panel panel-success'>\n" +
+                    "<div class='panel panel-{{color}}'>\n" +
                             "    <div class='panel-heading'>\n" +
-                            "        <h3 class='panel-title'>{{name}}</h3>\n" +
+                            "        <h3 class='panel-title'>{{name}} <span class='text-muted'>{{type}}</span></h3>\n" +
                             "    </div>\n" +
                             "    <div class='panel-body'><code>{{declaration}}</code></div>\n" +
                             "</div>";
 
-            panel = StringUtils.replaceOnce(panel, "{{name}}", methodInfo.getName());
-            panel = StringUtils.replaceOnce(panel, "{{declaration}}", methodInfo.getDeclaration());
+            panel = StringUtils.replaceOnce(panel, "{{name}}", memberInfo.getName());
+            panel = StringUtils.replaceOnce(panel, "{{declaration}}", memberInfo.getDeclaration());
+            panel = StringUtils.replaceOnce(panel, "{{type}}", memberInfo.getType().toString());
+            panel = StringUtils.replaceOnce(panel, "{{color}}", memberInfo.getType().getColor());
             content += panel;
         }
 
@@ -113,7 +116,7 @@ public class SiteCreator {
                 .append(typeInfo.getId())
                 .append("'>")
                 .append("<span class='badge'>")
-                .append(typeInfo.getMethods().size())
+                .append(typeInfo.getMembers().size())
                 .append("</span>")
                 .append(typeInfo.getPackageName())
                 .append(".")

@@ -73,31 +73,45 @@ public class FileParser {
         typeInfo.setFullType(fullType);
         typeInfo.setPackageName(packageName);
         typeInfo.setPath(path);
-//        typeInfo.setDescription(description);
         typeInfo.setNewType(newType);
 
-        Elements methods = body.select(".contentContainer .details > ul > li > ul > li > ul");
-
-        for (Element ul : methods) {
-            String methodName = ul.select("h4").text();
-            Elements elements = ul.select("dl > dd");
-            for (Element dd : elements) {
-                if (newType || dd.text().equals("1.8")) {
-                    MethodInfo methodInfo = new MethodInfo();
-                    methodInfo.setName(methodName);
-                    methodInfo.setDeclaration(ul.select("pre").first().html());
-//                    methodInfo.setDescription(ul.select(".block").first().html());
-                    typeInfo.getMethods().add(methodInfo);
+        Elements elements = body.select(".contentContainer .details > ul > li > ul > li");
+        for (Element element : elements) {
+            MemberType type = MemberType.UNKNOWN;
+            Element a = element.child(0);
+            String name = a.attr("name");
+            switch (name) {
+                case "constructor.detail":
+                    type = MemberType.CONSTRUCTOR;
                     break;
+                case "method.detail":
+                    type = MemberType.METHOD;
+                    break;
+                case "field.detail":
+                    type = MemberType.FIELD;
+                    break;
+            }
+
+            for (Element ul : element.select("> ul")) {
+                String methodName = ul.select("h4").text();
+                Elements dds = ul.select("dl > dd");
+                for (Element dd : dds) {
+                    if (newType || dd.text().equals("1.8")) {
+                        MemberInfo memberInfo = new MemberInfo();
+                        memberInfo.setType(type);
+                        memberInfo.setName(methodName);
+                        memberInfo.setDeclaration(ul.select("pre").first().html());
+                        typeInfo.getMembers().add(memberInfo);
+                        break;
+                    }
                 }
             }
         }
 
-        if (typeInfo.getMethods().isEmpty()) {
+        if (typeInfo.getMembers().isEmpty()) {
             return Optional.empty();
         }
 
         return Optional.of(typeInfo);
     }
-
 }

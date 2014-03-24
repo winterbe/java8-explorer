@@ -11,10 +11,9 @@ public class TypeInfo {
     private String name;
     private String fullType;
     private String packageName;
-    private String description;
     private String path;
     private boolean newType;
-    private List<MethodInfo> methods = new ArrayList<>();
+    private List<MemberInfo> members = new ArrayList<>();
 
     public String getPath() {
         return path;
@@ -32,12 +31,12 @@ public class TypeInfo {
         this.id = id;
     }
 
-    public List<MethodInfo> getMethods() {
-        return methods;
+    public List<MemberInfo> getMembers() {
+        return members;
     }
 
-    public void setMethods(List<MethodInfo> methods) {
-        this.methods = methods;
+    public void setMembers(List<MemberInfo> members) {
+        this.members = members;
     }
 
     public boolean isNewType() {
@@ -70,14 +69,6 @@ public class TypeInfo {
 
     public void setFullType(String fullType) {
         this.fullType = fullType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 }

@@ -3,10 +3,18 @@ package com.winterbe.java8.explorer;
 /**
  * @author Benjamin Winterberg
  */
-public class MethodInfo {
+public class MemberInfo {
     private String name;
     private String declaration;
-    private String description;
+    private MemberType type;
+
+    public MemberType getType() {
+        return type;
+    }
+
+    public void setType(MemberType type) {
+        this.type = type;
+    }
 
     public String getDeclaration() {
         return declaration;
@@ -24,11 +32,4 @@ public class MethodInfo {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }
