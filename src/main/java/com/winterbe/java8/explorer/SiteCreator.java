@@ -65,38 +65,38 @@ public class SiteCreator {
     }
 
     private String createDetailView(TypeInfo typeInfo) {
-        String description = typeInfo.getDescription();
-        if (!typeInfo.isNewType()) {
-            int size = typeInfo.getMethods().size();
-            description = "<p class='text-muted'>This type already exists in earlier versions of Java. {{size}} new member{{text}} been added in JDK 1.8.<br><br>" +
-                    "See official javadoc for detailed descriptions of this type.</p>";
-            description = StringUtils.replaceOnce(description, "{{size}}", String.valueOf(size));
-            description = StringUtils.replaceOnce(description, "{{text}}", size == 1 ? " has" : "s have");
-        }
+//        String description = typeInfo.getDescription();
+//        if (!typeInfo.isNewType()) {
+//            int size = typeInfo.getMethods().size();
+//            description = "<p class='text-muted'>This type already exists in earlier versions of Java. {{size}} new member{{text}} been added in JDK 1.8.<br><br>" +
+//                    "See official javadoc for detailed descriptions of this type.</p>";
+//            description = StringUtils.replaceOnce(description, "{{size}}", String.valueOf(size));
+//            description = StringUtils.replaceOnce(description, "{{text}}", size == 1 ? " has" : "s have");
+//        }
 
         String html = "<div id='detail{{id}}' class='detail-view'>{{content}}</div>";
 
         String content =
                 "<div class='panel panel-success'>\n" +
-                        "    <div class=\"panel-heading\">\n" +
-                        "        <h3 class=\"panel-title\">{{name}}</h3>\n" +
+                        "    <div class='panel-heading'>\n" +
+                        "        <h3 class='panel-title'>{{name}}</h3>\n" +
                         "    </div>\n" +
-                        "    <div class=\"panel-body\">{{description}}</div>\n" +
+                        "    <div class='panel-body'><code>{{declaration}}</code></div>\n" +
                         "</div>";
-        content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getPackageName() + "." + typeInfo.getName());
-        content = StringUtils.replaceOnce(content, "{{description}}", description);
+        content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getFullType());
+        content = StringUtils.replaceOnce(content, "{{declaration}}", typeInfo.getPackageName() + "." + typeInfo.getName());
 
         for (MethodInfo methodInfo : typeInfo.getMethods()) {
             String panel =
                     "<div class='panel panel-info'>\n" +
-                            "    <div class=\"panel-heading\">\n" +
-                            "        <h3 class=\"panel-title\">{{name}}</h3>\n" +
+                            "    <div class='panel-heading'>\n" +
+                            "        <h3 class='panel-title'>{{name}}</h3>\n" +
                             "    </div>\n" +
-                            "    <div class=\"panel-body\">{{description}}</div>\n" +
+                            "    <div class='panel-body'><code>{{declaration}}</code></div>\n" +
                             "</div>";
 
-            panel = StringUtils.replaceOnce(panel, "{{name}}", methodInfo.getDeclaration());
-            panel = StringUtils.replaceOnce(panel, "{{description}}", methodInfo.getDescription());
+            panel = StringUtils.replaceOnce(panel, "{{name}}", methodInfo.getName());
+            panel = StringUtils.replaceOnce(panel, "{{declaration}}", methodInfo.getDeclaration());
             content += panel;
         }
 

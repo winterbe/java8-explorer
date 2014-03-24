@@ -52,11 +52,11 @@ public class FileParser {
                 .last()
                 .text();
 
-        Element block = body
-                .select(".contentContainer .description .block")
-                .first();
-
-        String description = block != null ? block.html() : "";
+//        Element block = body
+//                .select(".contentContainer .description .block")
+//                .first();
+//
+//        String description = block != null ? block.html() : "";
 
         boolean newType = false;
         Elements elements1 = body.select(".contentContainer .description dd");
@@ -72,7 +72,7 @@ public class FileParser {
         typeInfo.setName(typeName);
         typeInfo.setFullType(fullType);
         typeInfo.setPackageName(packageName);
-        typeInfo.setDescription(description);
+//        typeInfo.setDescription(description);
         typeInfo.setNewType(newType);
 
         Elements methods = body.select(".contentContainer .details > ul > li > ul > li > ul");
@@ -85,7 +85,7 @@ public class FileParser {
                     MethodInfo methodInfo = new MethodInfo();
                     methodInfo.setName(methodName);
                     methodInfo.setDeclaration(ul.select("pre").first().html());
-                    methodInfo.setDescription(ul.select(".block").first().html());
+//                    methodInfo.setDescription(ul.select(".block").first().html());
                     typeInfo.getMethods().add(methodInfo);
                     break;
                 }
