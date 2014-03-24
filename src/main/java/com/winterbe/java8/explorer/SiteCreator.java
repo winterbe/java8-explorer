@@ -1,6 +1,7 @@
 package com.winterbe.java8.explorer;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intellij.lang.annotations.Language;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -65,30 +66,31 @@ public class SiteCreator {
     }
 
     private String createDetailView(TypeInfo typeInfo) {
-//        String description = typeInfo.getDescription();
-//        if (!typeInfo.isNewType()) {
-//            int size = typeInfo.getMethods().size();
-//            description = "<p class='text-muted'>This type already exists in earlier versions of Java. {{size}} new member{{text}} been added in JDK 1.8.<br><br>" +
-//                    "See official javadoc for detailed descriptions of this type.</p>";
-//            description = StringUtils.replaceOnce(description, "{{size}}", String.valueOf(size));
-//            description = StringUtils.replaceOnce(description, "{{text}}", size == 1 ? " has" : "s have");
-//        }
-
+        @Language("HTML")
         String html = "<div id='detail{{id}}' class='detail-view'>{{content}}</div>";
 
+        @Language("HTML")
         String content =
-                "<div class='panel panel-success'>\n" +
+                "<div class='panel panel-primary'>\n" +
                         "    <div class='panel-heading'>\n" +
                         "        <h3 class='panel-title'>{{name}}</h3>\n" +
                         "    </div>\n" +
-                        "    <div class='panel-body'><code>{{declaration}}</code></div>\n" +
+                        "    <div class='panel-body'>\n" +
+                        "        <code>{{declaration}}</code>\n" +
+                        "        <div class='pull-right'>\n" +
+                        "            <a href='{{url}}' class='btn btn-xs btn-default'>JAVADOC</a>\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
                         "</div>";
+
         content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getFullType());
         content = StringUtils.replaceOnce(content, "{{declaration}}", typeInfo.getPackageName() + "." + typeInfo.getName());
+        content = StringUtils.replaceOnce(content, "{{url}}", URI + typeInfo.getPath());
 
         for (MethodInfo methodInfo : typeInfo.getMethods()) {
+            @Language("HTML")
             String panel =
-                    "<div class='panel panel-info'>\n" +
+                    "<div class='panel panel-success'>\n" +
                             "    <div class='panel-heading'>\n" +
                             "        <h3 class='panel-title'>{{name}}</h3>\n" +
                             "    </div>\n" +

@@ -12,8 +12,17 @@ public class TypeInfo {
     private String fullType;
     private String packageName;
     private String description;
+    private String path;
     private boolean newType;
     private List<MethodInfo> methods = new ArrayList<>();
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public int getId() {
         return id;

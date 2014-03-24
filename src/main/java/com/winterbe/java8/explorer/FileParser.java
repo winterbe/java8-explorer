@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public class FileParser {
 
-    public Optional<TypeInfo> parse(File file, int id) throws IOException {
+    public Optional<TypeInfo> parse(File file, String path, int id) throws IOException {
         if (!file.exists()) {
             throw new FileNotFoundException("file does not exist: " + file.getAbsolutePath());
         }
@@ -24,7 +24,7 @@ public class FileParser {
         Document document = Jsoup.parse(file, "UTF-8", "http://download.java.net/jdk8/docs/api/");
 
         try {
-            return getTypeInfo(document, id);
+            return getTypeInfo(document, path, id);
         }
         catch (Exception e) {
             System.err.println("failed to parse file " + file.getAbsolutePath() + ": " + e.getMessage());
@@ -32,7 +32,7 @@ public class FileParser {
         }
     }
 
-    private Optional<TypeInfo> getTypeInfo(Document document, int id) {
+    private Optional<TypeInfo> getTypeInfo(Document document, String path, int id) {
         String title = document.title();
         String typeName = StringUtils.substringBefore(title, " ");
 
@@ -72,6 +72,7 @@ public class FileParser {
         typeInfo.setName(typeName);
         typeInfo.setFullType(fullType);
         typeInfo.setPackageName(packageName);
+        typeInfo.setPath(path);
 //        typeInfo.setDescription(description);
         typeInfo.setNewType(newType);
 
