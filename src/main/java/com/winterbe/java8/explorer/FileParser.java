@@ -52,11 +52,10 @@ public class FileParser {
                 .last()
                 .text();
 
-//        Element block = body
-//                .select(".contentContainer .description .block")
-//                .first();
-//
-//        String description = block != null ? block.html() : "";
+        String declaration = body
+                .select(".description > ul > li > pre")
+                .first()
+                .html();
 
         boolean newType = false;
         Elements elements1 = body.select(".contentContainer .description dd");
@@ -75,6 +74,7 @@ public class FileParser {
         typeInfo.setPackageName(packageName);
         typeInfo.setPath(path);
         typeInfo.setNewType(newType);
+        typeInfo.setDeclaration(declaration);
 
         Elements elements = body.select(".contentContainer .details > ul > li > ul > li");
         for (Element element : elements) {

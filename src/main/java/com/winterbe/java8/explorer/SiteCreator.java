@@ -87,15 +87,13 @@ public class SiteCreator {
                         "        <h3 class='panel-title'>{{name}} <span class='text-muted' style='color: white;'>{{type}}</span></h3>\n" +
                         "    </div>\n" +
                         "    <div class='panel-body'>\n" +
-                        "        <code>{{declaration}}</code>\n" +
-                        "        <div class='pull-right'>\n" +
-                        "            <a href='{{url}}' class='btn btn-xs btn-default'>JAVADOC</a>\n" +
-                        "        </div>\n" +
+                        "        <pre>{{declaration}}</pre>\n" +
+                        "        <a href='{{url}}' class='btn btn-xs btn-default javadoc'>JAVADOC</a>\n" +
                         "    </div>\n" +
                         "</div>";
 
         content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getPackageName() + "." + typeInfo.getName());
-        content = StringUtils.replaceOnce(content, "{{declaration}}", typeInfo.getFullType());
+        content = StringUtils.replaceOnce(content, "{{declaration}}", typeInfo.getDeclaration());
         content = StringUtils.replaceOnce(content, "{{url}}", URI + typeInfo.getPath());
         content = StringUtils.replaceOnce(content, "{{type}}", typeInfo.getFileType().toString());
         return content;

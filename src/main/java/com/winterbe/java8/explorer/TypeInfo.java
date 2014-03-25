@@ -11,10 +11,19 @@ public class TypeInfo {
     private String name;
     private String fullType;
     private String packageName;
+    private String declaration;
     private String path;
     private boolean newType;
     private FileType fileType;
     private List<MemberInfo> members = new ArrayList<>();
+
+    public String getDeclaration() {
+        return declaration;
+    }
+
+    public void setDeclaration(String declaration) {
+        this.declaration = declaration;
+    }
 
     public FileType getFileType() {
         return fileType;
