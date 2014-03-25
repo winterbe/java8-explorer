@@ -67,9 +67,6 @@ public class SiteCreator {
 
     private String createDetailView(TypeInfo typeInfo) {
         @Language("HTML")
-        String html = "<div id='detail{{id}}' class='detail-view'>{{content}}</div>";
-
-        @Language("HTML")
         String content =
                 "<div class='panel panel-primary'>\n" +
                         "    <div class='panel-heading'>\n" +
@@ -105,7 +102,10 @@ public class SiteCreator {
             content += panel;
         }
 
+        @Language("HTML")
+        String html = "<div id='detail{{id}}' class='detail-view' data-name='{{name}}'>{{content}}</div>";
         html = StringUtils.replaceOnce(html, "{{id}}", String.valueOf(typeInfo.getId()));
+        html = StringUtils.replaceOnce(html, "{{name}}", typeInfo.getName());
         html = StringUtils.replaceOnce(html, "{{content}}", content);
         return html;
     }

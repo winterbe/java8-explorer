@@ -44,7 +44,7 @@
         }
 
         .navbar-brand {
-            font-size: 20px;
+            margin-left: -20px;
         }
 
         .navbar-link {
@@ -85,12 +85,24 @@
         #back {
             display: none;
         }
+
+        #subtitle {
+            display: none;
+        }
     </style>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#" data-target="main">Java 8 API Explorer</a>
+        <a class="navbar-brand" href="http://winterbe.com">
+            <i class="fa fa-home"></i> winterbe.com
+        </a>
+        <span class="navbar-brand" style="color: #AAA;">/</span>
+        <a class="navbar-brand" href="#" data-target="main">java8-explorer</a>
+        <div id="subtitle">
+            <span class="navbar-brand" style="color: #AAA;">/</span>
+            <span class="navbar-brand text"></span>
+        </div>
 
         <form id="back" class="navbar-form navbar-right">
             <button class="btn btn-default" data-target="main" title="Back to Overview">
@@ -99,7 +111,6 @@
         </form>
 
         <p id="social" class="navbar-text navbar-right">
-            <!--<a href="http://winterbe.com" class="navbar-link">winterbe.com</a>-->
             <a href="#" class="navbar-link"><i class="fa fa-twitter"></i></a>
             <a href="#" class="navbar-link"><i class="fa fa-google-plus"></i></a>
             <a href="#" class="navbar-link"><i class="fa fa-facebook"></i></a>
@@ -114,7 +125,7 @@
             <span class="input-group-addon">
                 <i class="fa fa-search"></i>
             </span>
-            <input id="search-input" type="text" class="form-control" placeholder="Search..." autofocus>
+            <input id="search-input" type="text" class="form-control" placeholder="Search all new Java 8 API extensions..." autofocus>
             <span class="input-group-addon" title="New types only">
                 <input id="new-types-only" type="checkbox">
             </span>
@@ -142,13 +153,17 @@
         var showTargetId = function (targetId) {
             currentTop = $(window).scrollTop();
             $('#results').hide();
-            $('#detail' + targetId).show();
+            var $target = $('#detail' + targetId);
+            var name = $target.data('name');
+            $('#subtitle').show().find('.text').text(name);
+            $target.show();
             $('#social').hide();
             $('#back').show();
             window.scrollTo(0, 0);
         };
 
         var showMainPage = function () {
+            $('#subtitle').hide().find('.text').text('');
             $('#details').find('.detail-view').hide();
             $('#results').show();
             $('#back').hide();
