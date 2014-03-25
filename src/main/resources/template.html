@@ -39,6 +39,11 @@
             padding-top: 10px;
         }
 
+        .navbar {
+            opacity: 0.95;
+            box-shadow: inset 0 -1px 0 #FFF;
+        }
+
         body {
             padding-top: 80px;
         }
@@ -92,7 +97,7 @@
             position: relative;
         }
 
-        .panel-title span {
+        .panel-title .text-muted {
             position: absolute;
             right: 0;
             top: 2px;
@@ -111,7 +116,7 @@
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
-        <a class="navbar-brand" href="http://winterbe.com">
+        <a class="navbar-brand" href="http://winterbe.com" title="Benjamin Winterberg">
             <i class="fa fa-home"></i> winterbe.com
         </a>
         <span class="navbar-brand" style="color: #AAA;">/</span>
@@ -143,7 +148,7 @@
             <span class="input-group-addon">
                 <i class="fa fa-search"></i>
             </span>
-            <input id="search-input" type="text" class="form-control" placeholder="Search all new Java 8 API features..." autofocus>
+            <input id="search-input" type="text" class="form-control" placeholder="Search for new Java 8 API features..." autofocus>
             <span class="input-group-addon" title="New types only">
                 <input id="new-types-only" type="checkbox">
             </span>
@@ -169,19 +174,38 @@
     $(function () {
         var currentTop = 0;
 
-        var showTargetId = function (targetId) {
+        var showClass = function(className) {
+            if (!className) return;
+
+            $('.detail-view .cname').each(function() {
+                var $this = $(this);
+                var text = $this.text();
+                if (text === className) {
+                    var $detailView = $this.closest('.detail-view');
+                    showDetailView($detailView);
+                }
+            });
+        };
+
+        var showDetailView = function ($detailView) {
             currentTop = $(window).scrollTop();
+            var name = $detailView.data('name');
+            var className = $detailView.find('.cname').text();
             $('#results').hide();
-            var $target = $('#detail' + targetId);
-            var name = $target.data('name');
             $('#subtitle').show().find('.text').text(name);
-            $target.show();
+            $detailView.show();
             $('#social').hide();
             $('#back').show();
             window.scrollTo(0, 0);
+            if (window.history.pushState) {
+                window.history.pushState(className, 'class', '?class=' + className);
+            }
         };
 
         var showMainPage = function () {
+            if (window.history.pushState) {
+                window.history.pushState('search', 'class', '?');
+            }
             var $results = $('#results');
             if ($results.is(':visible')) {
                 window.scrollTo(0, 0);
@@ -208,7 +232,8 @@
                     $('#results').find('a.active').removeClass('active');
                     $(this).addClass('active');
                     var targetId = $(this).data('targetId');
-                    showTargetId(targetId);
+                    var $detailView = $('#detail' + targetId);
+                    showDetailView($detailView);
                 });
 
         var applyFilter = function () {
@@ -235,6 +260,10 @@
 
         $('#search-input').on('input', _.debounce(applyFilter, 250));
         $('#new-types-only').on('change', applyFilter);
+
+
+        var className = window.location.href.toString().split('?class=')[1];
+        showClass(className);
     });
 </script>
 

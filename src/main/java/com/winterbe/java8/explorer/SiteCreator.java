@@ -84,7 +84,7 @@ public class SiteCreator {
         String content =
                 "<div class='panel panel-primary'>\n" +
                         "    <div class='panel-heading'>\n" +
-                        "        <h3 class='panel-title'>{{name}} <span class='text-muted' style='color: white;'>{{type}}</span></h3>\n" +
+                        "        <h3 class='panel-title'><span class='cname'>{{name}}</span> <span class='text-muted' style='color: white;'>{{type}}</span></h3>\n" +
                         "    </div>\n" +
                         "    <div class='panel-body'>\n" +
                         "        <pre>{{declaration}}</pre>\n" +
