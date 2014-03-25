@@ -13,7 +13,16 @@ public class TypeInfo {
     private String packageName;
     private String path;
     private boolean newType;
+    private FileType fileType;
     private List<MemberInfo> members = new ArrayList<>();
+
+    public FileType getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(FileType fileType) {
+        this.fileType = fileType;
+    }
 
     public String getPath() {
         return path;

@@ -40,8 +40,6 @@ public class SiteCreator {
             details.append(detailView);
         }
 
-        document.body().select("table").addClass("table").addClass("table-bordered");
-
         rewriteRelativeUrls(document);
 
         File file = new File("_site/index.html");
@@ -52,7 +50,7 @@ public class SiteCreator {
     }
 
     private void rewriteRelativeUrls(Document document) {
-        document.body().select("a").forEach((a) -> {
+        document.body().select(".panel a").forEach((a) -> {
             String href = a.attr("href");
             if (href.equals("#")) {
                 return;
@@ -66,39 +64,10 @@ public class SiteCreator {
     }
 
     private String createDetailView(TypeInfo typeInfo) {
-        @Language("HTML")
-        String content =
-                "<div class='panel panel-primary'>\n" +
-                        "    <div class='panel-heading'>\n" +
-                        "        <h3 class='panel-title'>{{name}} <span class='text-muted' style='color: white;'>{{info}}</span></h3>\n" +
-                        "    </div>\n" +
-                        "    <div class='panel-body'>\n" +
-                        "        <code>{{declaration}}</code>\n" +
-                        "        <div class='pull-right'>\n" +
-                        "            <a href='{{url}}' class='btn btn-xs btn-default'>JAVADOC</a>\n" +
-                        "        </div>\n" +
-                        "    </div>\n" +
-                        "</div>";
-
-        content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getFullType());
-        content = StringUtils.replaceOnce(content, "{{declaration}}", typeInfo.getPackageName() + "." + typeInfo.getName());
-        content = StringUtils.replaceOnce(content, "{{url}}", URI + typeInfo.getPath());
-        content = StringUtils.replaceOnce(content, "{{info}}", typeInfo.isNewType() ? "NEW" : "");
+        String content = createClassView(typeInfo);
 
         for (MemberInfo memberInfo : typeInfo.getMembers()) {
-            @Language("HTML")
-            String panel =
-                    "<div class='panel panel-{{color}}'>\n" +
-                            "    <div class='panel-heading'>\n" +
-                            "        <h3 class='panel-title'>{{name}} <span class='text-muted'>{{type}}</span></h3>\n" +
-                            "    </div>\n" +
-                            "    <div class='panel-body'><code>{{declaration}}</code></div>\n" +
-                            "</div>";
-
-            panel = StringUtils.replaceOnce(panel, "{{name}}", memberInfo.getName());
-            panel = StringUtils.replaceOnce(panel, "{{declaration}}", memberInfo.getDeclaration());
-            panel = StringUtils.replaceOnce(panel, "{{type}}", memberInfo.getType().toString());
-            panel = StringUtils.replaceOnce(panel, "{{color}}", memberInfo.getType().getColor());
+            String panel = createMemberView(memberInfo);
             content += panel;
         }
 
@@ -108,6 +77,45 @@ public class SiteCreator {
         html = StringUtils.replaceOnce(html, "{{name}}", typeInfo.getName());
         html = StringUtils.replaceOnce(html, "{{content}}", content);
         return html;
+    }
+
+    private String createClassView(TypeInfo typeInfo) {
+        @Language("HTML")
+        String content =
+                "<div class='panel panel-primary'>\n" +
+                        "    <div class='panel-heading'>\n" +
+                        "        <h3 class='panel-title'>{{name}} <span class='text-muted' style='color: white;'>{{type}}</span></h3>\n" +
+                        "    </div>\n" +
+                        "    <div class='panel-body'>\n" +
+                        "        <code>{{declaration}}</code>\n" +
+                        "        <div class='pull-right'>\n" +
+                        "            <a href='{{url}}' class='btn btn-xs btn-default'>JAVADOC</a>\n" +
+                        "        </div>\n" +
+                        "    </div>\n" +
+                        "</div>";
+
+        content = StringUtils.replaceOnce(content, "{{name}}", typeInfo.getPackageName() + "." + typeInfo.getName());
+        content = StringUtils.replaceOnce(content, "{{declaration}}", typeInfo.getFullType());
+        content = StringUtils.replaceOnce(content, "{{url}}", URI + typeInfo.getPath());
+        content = StringUtils.replaceOnce(content, "{{type}}", typeInfo.getFileType().toString());
+        return content;
+    }
+
+    private String createMemberView(MemberInfo memberInfo) {
+        @Language("HTML")
+        String panel =
+                "<div class='panel panel-{{color}}'>\n" +
+                        "    <div class='panel-heading'>\n" +
+                        "        <h3 class='panel-title'>{{name}} <span class='text-muted'>{{type}}</span></h3>\n" +
+                        "    </div>\n" +
+                        "    <div class='panel-body'><code>{{declaration}}</code></div>\n" +
+                        "</div>";
+
+        panel = StringUtils.replaceOnce(panel, "{{name}}", memberInfo.getName());
+        panel = StringUtils.replaceOnce(panel, "{{declaration}}", memberInfo.getDeclaration());
+        panel = StringUtils.replaceOnce(panel, "{{type}}", memberInfo.getType().toString());
+        panel = StringUtils.replaceOnce(panel, "{{color}}", memberInfo.getType().getColor());
+        return panel;
     }
 
     private StringBuilder createListEntry(TypeInfo typeInfo) {

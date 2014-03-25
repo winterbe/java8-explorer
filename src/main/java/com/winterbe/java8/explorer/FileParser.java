@@ -71,6 +71,7 @@ public class FileParser {
         typeInfo.setId(id);
         typeInfo.setName(typeName);
         typeInfo.setFullType(fullType);
+        typeInfo.setFileType(FileType.ofFullType(fullType));
         typeInfo.setPackageName(packageName);
         typeInfo.setPath(path);
         typeInfo.setNewType(newType);
