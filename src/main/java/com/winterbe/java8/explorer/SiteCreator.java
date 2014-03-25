@@ -124,9 +124,11 @@ public class SiteCreator {
                 .append("<span class='badge'>")
                 .append(typeInfo.getMembers().size())
                 .append("</span>")
+                .append(typeInfo.getFileType() == FileType.INTERFACE ? "<em>" : "")
                 .append(typeInfo.getPackageName())
                 .append(".")
-                .append(typeInfo.getName());
+                .append(typeInfo.getName())
+                .append(typeInfo.getFileType() == FileType.INTERFACE ? "</em>" : "");
 
         if (typeInfo.isNewType()) {
             html.append(" <span class='label label-success'>NEW</span>");
