@@ -99,6 +99,7 @@
         </a>
         <span class="navbar-brand" style="color: #AAA;">/</span>
         <a class="navbar-brand" href="#" data-target="main">java8-explorer</a>
+
         <div id="subtitle">
             <span class="navbar-brand" style="color: #AAA;">/</span>
             <span class="navbar-brand text"></span>
@@ -138,7 +139,8 @@
 <div id="footer">
     <div class="container">
         <p class="text-muted">
-            Disclaimer: The text descriptions shown on this page originate to the official <a href="http://docs.oracle.com/javase/8/docs/api/">JDK 1.8 API Documentation</a> from Oracle. Copyright © 1993, 2014, <a href="http://www.oracle.com/">Oracle</a> and/or its affiliates.
+            Disclaimer: The text descriptions shown on this page originate to the official <a href="http://docs.oracle.com/javase/8/docs/api/">JDK 1.8 API
+            Documentation</a> from Oracle. Copyright © 1993, 2014, <a href="http://www.oracle.com/">Oracle</a> and/or its affiliates.
         </p>
     </div>
 </div>
@@ -163,9 +165,15 @@
         };
 
         var showMainPage = function () {
+            var $results = $('#results');
+            if ($results.is(':visible')) {
+                window.scrollTo(0, 0);
+                $('#search-input').trigger('focus');
+                return;
+            }
             $('#subtitle').hide().find('.text').text('');
             $('#details').find('.detail-view').hide();
-            $('#results').show();
+            $results.show();
             $('#back').hide();
             $('#social').show();
             window.scrollTo(0, currentTop);
