@@ -44,6 +44,10 @@
             box-shadow: inset 0 -1px 0 #FFF;
         }
 
+        .navbar .container-fluid {
+            position: relative;
+        }
+
         body {
             padding-top: 80px;
         }
@@ -105,7 +109,12 @@
         }
 
         #back {
+            right: 15px;
+            top: 8px;
+            position: absolute;
             display: none;
+            margin: 0;
+            border: 0;
         }
 
         #subtitle {
@@ -121,19 +130,19 @@
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <a class="navbar-brand" href="http://winterbe.com" title="Benjamin Winterberg">
-            <i class="fa fa-home"></i> winterbe.com
+            <i class="fa fa-home"></i> <span class="hidden-xs">winterbe.com</span>
         </a>
         <span class="navbar-brand" style="color: #AAA;">/</span>
         <a class="navbar-brand" href="#" data-target="main">java8-explorer</a>
 
-        <div id="subtitle">
+        <div id="subtitle" class="hidden-xs">
             <span class="navbar-brand" style="color: #AAA;">/</span>
             <span class="navbar-brand text"></span>
         </div>
 
-        <form id="back" class="navbar-form navbar-right">
+        <form id="back">
             <button class="btn btn-default" data-target="main" title="Back to Overview">
-                <i class="fa fa-arrow-left"></i> Back
+                <i class="fa fa-chevron-left"></i> Back
             </button>
         </form>
 
