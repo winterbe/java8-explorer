@@ -72,8 +72,8 @@ public class SiteCreator {
         }
 
         @Language("HTML")
-        String html = "<div id='detail{{id}}' class='detail-view' data-name='{{name}}'>{{content}}</div>";
-        html = StringUtils.replaceOnce(html, "{{id}}", String.valueOf(typeInfo.getId()));
+        String html = "<div id='{{id}}' class='detail-view' data-name='{{name}}'>{{content}}</div>";
+        html = StringUtils.replaceOnce(html, "{{id}}", typeInfo.getId());
         html = StringUtils.replaceOnce(html, "{{name}}", typeInfo.getName());
         html = StringUtils.replaceOnce(html, "{{content}}", content);
         return html;

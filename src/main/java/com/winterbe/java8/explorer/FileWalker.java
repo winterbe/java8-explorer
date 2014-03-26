@@ -29,7 +29,7 @@ public class FileWalker {
         for (int i = 0; i < paths.size(); i++) {
             String path = paths.get(i);
             File file = new File(basePath + "/" + path);
-            Optional<TypeInfo> optional = parser.parse(file, path, i + 1);
+            Optional<TypeInfo> optional = parser.parse(file, path);
             optional.ifPresent(typeInfos::add);
 
 //            if (i == 500) {

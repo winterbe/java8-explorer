@@ -1,5 +1,7 @@
 package com.winterbe.java8.explorer;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +9,6 @@ import java.util.List;
  * @author Benjamin Winterberg
  */
 public class TypeInfo {
-    private int id;
     private String name;
     private String fullType;
     private String packageName;
@@ -41,12 +42,9 @@ public class TypeInfo {
         this.path = path;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public String getId() {
+        String id = packageName + name;
+        return StringUtils.remove(id, '.');
     }
 
     public List<MemberInfo> getMembers() {

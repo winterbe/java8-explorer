@@ -111,6 +111,10 @@
         #subtitle {
             display: none;
         }
+
+        #results {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -175,16 +179,9 @@
         var currentTop = 0;
 
         var showClass = function(className) {
-            if (!className) return;
-
-            $('.detail-view .cname').each(function() {
-                var $this = $(this);
-                var text = $this.text();
-                if (text === className) {
-                    var $detailView = $this.closest('.detail-view');
-                    showDetailView($detailView);
-                }
-            });
+            var id = className.replace(/\./g, '');
+            var $detailView = $('#' + id);
+            showDetailView($detailView);
         };
 
         var showDetailView = function ($detailView) {
@@ -232,7 +229,7 @@
                     $('#results').find('a.active').removeClass('active');
                     $(this).addClass('active');
                     var targetId = $(this).data('targetId');
-                    var $detailView = $('#detail' + targetId);
+                    var $detailView = $('#' + targetId);
                     showDetailView($detailView);
                 });
 
@@ -263,7 +260,13 @@
 
 
         var className = window.location.href.toString().split('?class=')[1];
-        showClass(className);
+        if (className) {
+            showClass(className);
+        }
+        else {
+            $('#results').show();
+        }
+
     });
 </script>
 
