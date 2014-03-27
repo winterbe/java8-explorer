@@ -16,6 +16,8 @@ import java.util.Optional;
  */
 public class FileParser {
 
+    private static final String JAVA_VERSION = "1.8";
+
     public Optional<TypeInfo> parse(File file, String path, Statistics statistics) throws IOException {
         if (!file.exists()) {
             throw new FileNotFoundException("file does not exist: " + file.getAbsolutePath());
@@ -39,7 +41,7 @@ public class FileParser {
 
         Element body = document.body();
 
-        if (!body.html().contains("1.8")) {
+        if (!body.html().contains(JAVA_VERSION)) {
             return Optional.empty();
         }
 
@@ -61,7 +63,7 @@ public class FileParser {
         boolean newType = false;
         Elements elements1 = body.select(".contentContainer .description dd");
         for (Element dd : elements1) {
-            if (dd.text().equals("1.8")) {
+            if (dd.text().equals(JAVA_VERSION)) {
                 newType = true;
                 break;
             }
@@ -102,7 +104,7 @@ public class FileParser {
                 for (Element dd : dds) {
                     statistics.maxMembers++;
 
-                    if (newType || dd.text().equals("1.8")) {
+                    if (newType || dd.text().equals(JAVA_VERSION)) {
                         MemberInfo memberInfo = new MemberInfo();
                         memberInfo.setType(type);
                         memberInfo.setName(methodName);
