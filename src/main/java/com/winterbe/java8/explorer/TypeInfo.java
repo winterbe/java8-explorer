@@ -18,6 +18,10 @@ public class TypeInfo {
     private FileType fileType;
     private List<MemberInfo> members = new ArrayList<>();
 
+    public boolean isFunctionalInterface() {
+        return StringUtils.contains(declaration, "@FunctionalInterface");
+    }
+
     public String getDeclaration() {
         return declaration;
     }

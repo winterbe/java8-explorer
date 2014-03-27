@@ -16,9 +16,10 @@ public class Main {
         FileWalker fileWalker = new FileWalker();
         ExplorerResult result = fileWalker.walk(basePath);
 
+        System.out.println(result.getStatistics());
+
         List<TypeInfo> typeInfos = result.getTypeInfos();
         typeInfos.sort((t1, t2) -> t1.getPackageName().compareTo(t2.getPackageName()));
-
 
         System.out.println("creating site");
 

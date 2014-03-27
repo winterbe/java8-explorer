@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 public class FileParser {
 
-    public Optional<TypeInfo> parse(File file, String path) throws IOException {
+    public Optional<TypeInfo> parse(File file, String path, Statistics statistics) throws IOException {
         if (!file.exists()) {
             throw new FileNotFoundException("file does not exist: " + file.getAbsolutePath());
         }
@@ -24,15 +24,16 @@ public class FileParser {
         Document document = Jsoup.parse(file, "UTF-8", "http://download.java.net/jdk8/docs/api/");
 
         try {
-            return getTypeInfo(document, path);
+            return getTypeInfo(document, path, statistics);
         }
         catch (Exception e) {
+            statistics.failures++;
             System.err.println("failed to parse file " + file.getAbsolutePath() + ": " + e.getMessage());
             return Optional.empty();
         }
     }
 
-    private Optional<TypeInfo> getTypeInfo(Document document, String path) {
+    private Optional<TypeInfo> getTypeInfo(Document document, String path, Statistics statistics) {
         String title = document.title();
         String typeName = StringUtils.substringBefore(title, " ");
 
@@ -69,7 +70,10 @@ public class FileParser {
         TypeInfo typeInfo = new TypeInfo();
         typeInfo.setName(typeName);
         typeInfo.setFullType(fullType);
-        typeInfo.setFileType(FileType.ofFullType(fullType));
+
+        FileType fileType = FileType.ofFullType(fullType);
+        typeInfo.setFileType(fileType);
+
         typeInfo.setPackageName(packageName);
         typeInfo.setPath(path);
         typeInfo.setNewType(newType);
@@ -96,12 +100,35 @@ public class FileParser {
                 String methodName = ul.select("h4").text();
                 Elements dds = ul.select("dl > dd");
                 for (Element dd : dds) {
+                    statistics.maxMembers++;
+
                     if (newType || dd.text().equals("1.8")) {
                         MemberInfo memberInfo = new MemberInfo();
                         memberInfo.setType(type);
                         memberInfo.setName(methodName);
                         memberInfo.setDeclaration(ul.select("pre").first().html());
                         typeInfo.getMembers().add(memberInfo);
+
+                        statistics.newMembers++;
+
+                        switch (memberInfo.getType()) {
+                            case METHOD:
+                                statistics.newMethods++;
+                                if (fileType == FileType.INTERFACE && memberInfo.isDefault()) {
+                                    statistics.newDefaulInterfacetMethods++;
+                                }
+                                if (fileType == FileType.INTERFACE && memberInfo.isStatic()) {
+                                    statistics.newStaticInterfaceMethods++;
+                                }
+                                break;
+                            case CONSTRUCTOR:
+                                statistics.newConstructors++;
+                                break;
+                            case FIELD:
+                                statistics.newFields++;
+                                break;
+                        }
+
                         break;
                     }
                 }
@@ -110,6 +137,26 @@ public class FileParser {
 
         if (typeInfo.getMembers().isEmpty()) {
             return Optional.empty();
+        }
+
+        if (newType) {
+            statistics.newFiles++;
+
+            switch (fileType) {
+                case CLASS:
+                    statistics.newClasses++;
+                    break;
+                case INTERFACE:
+                    statistics.newInterfaces++;
+                    break;
+                case ENUM:
+                    statistics.newEnums++;
+                    break;
+            }
+        }
+
+        if (typeInfo.isFunctionalInterface()) {
+            statistics.maxFunctionalInterfaces++;
         }
 
         return Optional.of(typeInfo);

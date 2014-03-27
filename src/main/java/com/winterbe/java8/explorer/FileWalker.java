@@ -22,6 +22,9 @@ public class FileWalker {
 
         List<String> paths = getPaths(basePath);
 
+        Statistics statistics = new Statistics();
+        statistics.maxFiles = paths.size();
+
         FileParser parser = new FileParser();
 
         List<TypeInfo> typeInfos = new ArrayList<>();
@@ -29,7 +32,7 @@ public class FileWalker {
         for (int i = 0; i < paths.size(); i++) {
             String path = paths.get(i);
             File file = new File(basePath + "/" + path);
-            Optional<TypeInfo> optional = parser.parse(file, path);
+            Optional<TypeInfo> optional = parser.parse(file, path, statistics);
             optional.ifPresent(typeInfos::add);
 
 //            if (i == 500) {
@@ -38,6 +41,7 @@ public class FileWalker {
         }
 
         ExplorerResult result = new ExplorerResult();
+        result.setStatistics(statistics);
         result.setTypeInfos(typeInfos);
         return result;
     }
